@@ -32,11 +32,6 @@ import yaml
 import logging
 
 
-from ._version import get_versions
-__version__ = get_versions()['version']
-del get_versions
-
-
 CONFIGNAME = 'config.yaml'
 CONFIGFILE = os.path.abspath(os.path.join(os.path.dirname(__file__), 'static',
                                           CONFIGNAME))
