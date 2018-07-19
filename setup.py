@@ -21,5 +21,6 @@ setup(name='configobject',
       license='MIT License',
       long_description=open('README.md').read(),
       install_requires=[
+          'pyyaml',
       ]
       )
