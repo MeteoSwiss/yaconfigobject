@@ -78,6 +78,9 @@ class Config(object):
 
         self.config = ConfigContainer()
 
+        if name is None:
+            name = CONFIGNAME
+
         if paths is None:
             logging.debug('No config paths specified! Trying to guess some...')
             calling_module = inspect.getmodule(inspect.stack()[0].frame.f_back)
@@ -86,7 +89,7 @@ class Config(object):
                      os.path.abspath(
                          os.path.expanduser(
                              '~/.configi/{}'.format(calling_package))),
-                     '{}/static'.format(
+                     '{}/config'.format(
                          os.path.dirname(calling_module.__file__)),
                      ]
 
