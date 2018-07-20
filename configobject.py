@@ -74,7 +74,7 @@ class ConfigContainer(dict):
 
 class Config(object):
 
-    def __init__(self, paths=None, name=None):
+    def __init__(self, paths=None, name=None, calling_frame=None):
 
         self.config = ConfigContainer()
 
@@ -83,25 +83,43 @@ class Config(object):
 
         if paths is None:
             logging.debug('No config paths specified! Trying to guess some...')
-            calling_module = inspect.getmodule(inspect.stack()[0].frame.f_back)
-            calling_package = calling_module.__package__
+
+            if calling_frame is None:
+                calling_frame = inspect.stack()[0].frame.f_back
+            calling_basefolder = os.path.dirname(calling_frame.filename)
+            calling_package = os.path.basename(calling_basefolder)
             paths = [os.getcwd(),
                      os.path.abspath(
                          os.path.expanduser(
-                             '~/.configi/{}'.format(calling_package))),
-                     '{}/config'.format(
-                         os.path.dirname(calling_module.__file__)),
+                             '~/.config/{}'.format(calling_package))),
+                     '{}/config'.format(calling_basefolder),
                      ]
 
+        nconfig = 0
         for path in paths[::-1]:
-            logging.debug('Trying to load {}.'.format(path))
             filepath = os.path.join(path, name)
+            logging.debug('Trying to load {}.'.format(filepath))
+
             if os.path.exists(filepath):
                 logging.info('Loading {}.'.format(filepath))
                 self.config.load(filepath)
+
+                nconfig += 1
+
+        if nconfig == 0:
+            logging.critical('!!! No configuration file loaded !!!')
 
     def __call__(self):
         return self.config
 
 
-CONFIG = Config(paths=None, name=None)()
+def _get_CONFIG_calling_frame(stack):
+    for frame in stack:
+        if frame.code_context is not None and \
+                'from configobject import CONFIG\n' in frame.code_context:
+            return frame
+    return None
+
+
+CONFIG = Config(paths=None, name=None,
+                calling_frame=_get_CONFIG_calling_frame(inspect.stack()))()
