@@ -23,7 +23,9 @@
 # SOFTWARE.
 
 
-__all__ = ['CONFIG',
+__all__ = ['Config',
+           'ConfigContainer',
+           'CONFIG',
            ]
 
 
@@ -31,12 +33,10 @@ import os
 import yaml
 import logging
 
+import inspect
+
 
 CONFIGNAME = 'config.yaml'
-CONFIGFILE = os.path.abspath(os.path.join(os.path.dirname(__file__), 'static',
-                                          CONFIGNAME))
-
-LOCALCONFIG = os.path.join(os.getcwd(), CONFIGNAME)
 
 
 class ConfigContainer(dict):
@@ -72,7 +72,33 @@ class ConfigContainer(dict):
                 self.__setitem__(key, val)
 
 
-CONFIG = ConfigContainer()
-CONFIG.load(CONFIGFILE)
-if os.path.isfile(LOCALCONFIG):
-    CONFIG.load(LOCALCONFIG)
+class Config(object):
+
+    def __init__(self, paths=None, name=None):
+
+        self.config = ConfigContainer()
+
+        if paths is None:
+            logging.debug('No config paths specified! Trying to guess some...')
+            calling_module = inspect.getmodule(inspect.stack()[0].frame.f_back)
+            calling_package = calling_module.__package__
+            paths = [os.getcwd(),
+                     os.path.abspath(
+                         os.path.expanduser(
+                             '~/.configi/{}'.format(calling_package))),
+                     '{}/static'.format(
+                         os.path.dirname(calling_module.__file__)),
+                     ]
+
+        for path in paths[::-1]:
+            logging.debug('Trying to load {}.'.format(path))
+            filepath = os.path.join(path, name)
+            if os.path.exists(filepath):
+                logging.info('Loading {}.'.format(filepath))
+                self.config.load(filepath)
+
+    def __call__(self):
+        return self.config
+
+
+CONFIG = Config(paths=None, name=None)()
