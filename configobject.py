@@ -86,13 +86,13 @@ class Config(object):
 
             if calling_frame is None:
                 calling_frame = inspect.stack()[0].frame.f_back
-            calling_basefolder = os.path.dirname(calling_frame.filename)
-            calling_package = os.path.basename(calling_basefolder)
+            self.config._package_base = os.path.dirname(calling_frame.filename)
+            calling_package = os.path.basename(self.config._package_base)
             paths = [os.getcwd(),
                      os.path.abspath(
                          os.path.expanduser(
                              '~/.config/{}'.format(calling_package))),
-                     '{}/config'.format(calling_basefolder),
+                     '{}/config'.format(self.config._package_base),
                      ]
 
         nconfig = 0
