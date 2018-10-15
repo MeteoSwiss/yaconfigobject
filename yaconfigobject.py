@@ -22,12 +22,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-
-__all__ = ['Config',
-           'ConfigContainer',
-           'CONFIG',
-           ]
-
+__all__ = [
+    'Config',
+    'ConfigContainer',
+]
 
 import os
 import yaml
@@ -35,6 +33,7 @@ import logging
 
 import inspect
 
+logger = logging.getLogger(__name__)
 
 CONFIGNAME = 'config.yaml'
 
@@ -47,7 +46,7 @@ class ConfigContainer(dict):
         """Load an arbitrary configuration file. Multiple files can be loaded,
         the last file loaded will take precedence over previously loaded files.
         """
-        logging.info('Loading configuration file: {}'.format(conffile))
+        logger.info('Loading configuration file: {}'.format(conffile))
 
         with open(conffile) as f:
             self.update(yaml.load(f))
@@ -72,54 +71,42 @@ class ConfigContainer(dict):
                 self.__setitem__(key, val)
 
 
-class Config(object):
-
-    def __init__(self, paths=None, name=None, calling_frame=None):
-
-        self.config = ConfigContainer()
+class Config(ConfigContainer):
+    def __init__(self, paths=None, name=None, calling_frame=None, **kwargs):
 
         if name is None:
             name = CONFIGNAME
 
         if paths is None:
-            logging.debug('No config paths specified! Trying to guess some...')
+            logger.debug('No config paths specified! Trying to guess some...')
 
             if calling_frame is None:
-                calling_frame = inspect.stack()[0].frame.f_back
-            self.config._package_base = os.path.dirname(calling_frame.filename)
-            calling_package = os.path.basename(self.config._package_base)
-            paths = [os.getcwd(),
-                     os.path.abspath(
-                         os.path.expanduser(
-                             '~/.config/{}'.format(calling_package))),
-                     '{}/config'.format(self.config._package_base),
-                     ]
+                calling_frame = inspect.getframeinfo(
+                    inspect.stack()[0].frame.f_back)
+                logger.debug('{}'.format(
+                    inspect.getframeinfo(inspect.stack()[0].frame.f_back)))
+            self._package_base = os.path.dirname(calling_frame.filename)
+            calling_package = os.path.basename(self._package_base)
+            paths = [
+                os.getcwd(),
+                os.path.abspath(
+                    os.path.expanduser(
+                        '~/.config/{}'.format(calling_package))),
+                '{}/config'.format(self._package_base),
+            ]
 
         nconfig = 0
         for path in paths[::-1]:
             filepath = os.path.join(path, name)
-            logging.debug('Trying to load {}.'.format(filepath))
+            logger.debug('Trying to load {}.'.format(filepath))
 
             if os.path.exists(filepath):
-                logging.info('Loading {}.'.format(filepath))
-                self.config.load(filepath)
+                logger.info('Loading {}.'.format(filepath))
+                self.load(filepath)
 
                 nconfig += 1
 
         if nconfig == 0:
-            logging.critical('!!! No configuration file loaded !!!')
+            logger.critical('!!! No configuration file loaded !!!')
 
-    def __call__(self):
-        return self.config
-
-
-def _get_CONFIG_calling_frame(stack):
-    for frame in stack:
-        if frame.code_context is not None and \
-                'from configobject import CONFIG\n' in frame.code_context:
-            return frame
-    return None
-
-
-CONFIG = Config(paths=None, name=None,
-                calling_frame=_get_CONFIG_calling_frame(inspect.stack()))()
+        super(Config, self).__init__(**kwargs)
