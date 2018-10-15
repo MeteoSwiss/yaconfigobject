@@ -72,7 +72,7 @@ class ConfigContainer(dict):
 
 
 class Config(ConfigContainer):
-    def __init__(self, paths=None, name=None, calling_frame=None, **kwargs):
+    def __init__(self, paths=None, name=None, **kwargs):
 
         if name is None:
             name = CONFIGNAME
@@ -80,11 +80,10 @@ class Config(ConfigContainer):
         if paths is None:
             logger.debug('No config paths specified! Trying to guess some...')
 
-            if calling_frame is None:
-                calling_frame = inspect.getframeinfo(
-                    inspect.stack()[0].frame.f_back)
-                logger.debug('{}'.format(
-                    inspect.getframeinfo(inspect.stack()[0].frame.f_back)))
+            calling_frame = inspect.getframeinfo(
+                inspect.stack()[0].frame.f_back)
+            logger.debug('{}'.format(
+                inspect.getframeinfo(inspect.stack()[0].frame.f_back)))
             self._package_base = os.path.dirname(calling_frame.filename)
             calling_package = os.path.basename(self._package_base)
             paths = [
