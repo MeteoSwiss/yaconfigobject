@@ -1,7 +1,8 @@
 [[source]]
-url = "https://pypi.org/simple"
-name = "pypi"
-verify_ssl = true
+trusted-host = "nexus.meteoswiss.ch"
+verify-ssl = false
+index = "https://nexus.meteoswiss.ch/repository/python-all/pypi"
+url = "https://nexus.meteoswiss.ch/repository/python-all/simple"
 
 [dev-packages]
 versioneer = "*"
