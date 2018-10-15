@@ -78,3 +78,12 @@ def test_update(tmpdir):
     assert config1.configitem.subitem2 == 4
     assert config1.configitem.subitem1 == 1
     assert config1.configitem.subitem3 == 3
+
+
+def test_kwargs():
+
+    TEST_STRING = 'a test string'
+
+    config = Config(testitem=TEST_STRING)
+
+    assert config.testitem == TEST_STRING
