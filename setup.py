@@ -7,14 +7,14 @@ from setuptools import setup
 import versioneer
 
 
-setup(name='configobject',
+setup(name='yaconfigobject',
       version=versioneer.get_version(),
       cmdclass=versioneer.get_cmdclass(),
       author='Philipp Meier',
       author_email='philipp.meier@meteoswiss.ch',
-      description='A library for providing YAML config files as object.',
+      description='A library representing YAML config files as object.',
       entry_points={},
-      py_modules=['configobject'],
+      py_modules=['yaconfigobject'],
       include_package_data=True,
       package_data={'': 'README.md',
                     },
