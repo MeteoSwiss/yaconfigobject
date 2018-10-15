@@ -2,3 +2,7 @@
 *.swp
 .venv
 *.pyc
+.idea
+build
+dist
+*.egg-info
