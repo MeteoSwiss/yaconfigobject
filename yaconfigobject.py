@@ -90,8 +90,8 @@ class Config(ConfigContainer):
                 os.getcwd(),
                 os.path.abspath(
                     os.path.expanduser(
-                        '~/.config/{}'.format(calling_package))),
-                '{}/config'.format(self._package_base),
+                        os.path.join('~', '.config', '{}').format(calling_package))),
+                os.path.join('{}', 'config').format(self._package_base),
             ]
 
         nconfig = 0
