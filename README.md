@@ -1,6 +1,10 @@
 yaconfigobject
 ==============
 
+[![pipeline status](https://gitlab.meteoswiss.ch/APP/yaconfigobject/badges/master/pipeline.svg)](https://gitlab.meteoswiss.ch/APP/yaconfigobject/commits/master)
+[![coverage report](https://gitlab.meteoswiss.ch/APP/yaconfigobject/badges/master/coverage.svg)](https://gitlab.meteoswiss.ch/APP/yaconfigobject/commits/master)
+
+
 Yet Anoter Configuration Object, this time using YAML.
 
 A Python package that provides application wide configuration as an object,
