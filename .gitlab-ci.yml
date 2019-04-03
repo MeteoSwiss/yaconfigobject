@@ -18,7 +18,7 @@ tests:
   stage: test
   script:
     - pip install pytest pytest-cov
-    - pytest --cov-report term-missing --cov=gitterdb
+    - pytest --cov-report term-missing --cov=yaconfigobject
   tags:
     - app
 
