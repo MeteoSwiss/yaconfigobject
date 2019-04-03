@@ -27,6 +27,8 @@ deploy:
   script:
     - pip install --no-cache-dir -i https://nexus.meteoswiss.ch/repository/python-all/simple --upgrade wheel
     - pip install --no-cache-dir -i https://nexus.meteoswiss.ch/repository/python-all/simple twine
+    - mkdir -p build/lib
+    - ln -s _version.py build/lib/_version.py
     - python setup.py bdist_wheel
     - twine upload dist/*
   tags:
