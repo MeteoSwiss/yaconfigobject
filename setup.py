@@ -4,7 +4,6 @@
 # Copyright (C) 2018, MeteoSwiss, Philipp Meier <philipp.meier@meteoswiss.ch>
 
 from setuptools import setup
-import versioneer
 
 
 setup(name='yaconfigobject',
