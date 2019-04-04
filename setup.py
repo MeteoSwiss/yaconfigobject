@@ -8,8 +8,7 @@ import versioneer
 
 
 setup(name='yaconfigobject',
-      version=versioneer.get_version(),
-      cmdclass=versioneer.get_cmdclass(),
+      use_scm_version=True,
       author='Philipp Meier',
       author_email='philipp.meier@meteoswiss.ch',
       description='A library representing YAML config files as object.',
@@ -20,6 +19,7 @@ setup(name='yaconfigobject',
                     },
       license='MIT License',
       long_description=open('README.md').read(),
+      setup_requires=['setuptools_scm'],
       install_requires=[
           'pyyaml',
       ]

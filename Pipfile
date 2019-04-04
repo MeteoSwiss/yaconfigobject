@@ -5,7 +5,6 @@ index = "https://nexus.meteoswiss.ch/repository/python-all/pypi"
 url = "https://nexus.meteoswiss.ch/repository/python-all/simple"
 
 [dev-packages]
-versioneer = "*"
 ipython = "*"
 pudb = "*"
 pytest = "*"
@@ -14,6 +13,7 @@ yapf = "*"
 
 [packages]
 pyyaml = "*"
+tox = "*"
 
 [requires]
 python_version = "3.5"
