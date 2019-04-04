@@ -33,9 +33,18 @@ import logging
 
 import inspect
 
+from pkg_resources import get_distribution, DistributionNotFound
+
+try:
+    __version__ = get_distribution(__name__).version
+except DistributionNotFound:
+    pass
+
+
 logger = logging.getLogger(__name__)
 
 CONFIGNAME = 'config.yaml'
+
 
 
 class ConfigError(Exception):
