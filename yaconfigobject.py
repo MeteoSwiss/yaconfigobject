@@ -53,7 +53,7 @@ class ConfigContainer(dict):
         logger.info('Loading configuration file: %s', conffile)
 
         with open(conffile) as f:
-            self.update(yaml.load(f))
+            self.update(yaml.load(f, Loader=yaml.FullLoader))
 
     def __setattr__(self, key, val):
         self.__setitem__(key, val)
