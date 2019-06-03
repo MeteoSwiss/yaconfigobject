@@ -40,11 +40,9 @@ try:
 except DistributionNotFound:
     pass
 
-
 logger = logging.getLogger(__name__)
 
 CONFIGNAME = 'config.yaml'
-
 
 
 class ConfigError(Exception):
@@ -62,7 +60,7 @@ class ConfigContainer(dict):
         logger.info('Loading configuration file: %s', conffile)
 
         with open(conffile) as f:
-            self.update(yaml.load(f, Loader=yaml.FullLoader))
+            self.update(yaml.load(f, Loader=yaml.SafeLoader))
 
     def __setattr__(self, key, val):
         self.__setitem__(key, val)
