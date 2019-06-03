@@ -7,7 +7,9 @@ sys.path.append(os.path.abspath('.'))
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
-from yaconfigobject import Config
+import pytest
+
+from yaconfigobject import Config, ConfigError
 
 TEST_CONFIG1 = """
 configitem:
@@ -19,7 +21,7 @@ configitem:
 TEST_CONFIG2 = """
 configitem:
     subitem2: 4
-    
+
 another:
     item: string
 """
@@ -79,6 +81,14 @@ def test_update(tmpdir):
     assert config1.configitem.subitem1 == 1
     assert config1.configitem.subitem3 == 3
 
+    config3 = Config(paths=[str(config_folder1)], name='config.yaml')
+    config4 = Config(paths=[str(config_folder2)], name='config.yaml')
+
+    config5 = config3 + config4
+    assert config5.configitem.subitem2 == 4
+    assert config5.configitem.subitem1 == 1
+    assert config5.configitem.subitem3 == 3
+
 
 def test_kwargs():
 
@@ -87,3 +97,27 @@ def test_kwargs():
     config = Config(testitem=TEST_STRING)
 
     assert config.testitem == TEST_STRING
+
+
+def test_check_folders(tmpdir):
+    folder1 = tmpdir.mkdir('exists')
+    configfile = folder1.join('config.yaml')
+    configfile.write(TEST_CONFIG1)
+
+    config = Config(paths=[str(folder1)], name='config.yaml')
+    config['existing_folder'] = str(folder1)
+
+    assert config.check_folders() == []
+
+    config['non_existing_dir'] = os.path.join(str(tmpdir), 'does_not_exist')
+
+    with pytest.raises(ConfigError):
+        config.check_folders(keyword='dir')
+
+    config['new_folder'] = os.path.join(str(tmpdir), 'will_be_created')
+
+    with pytest.raises(ConfigError):
+        config.check_folders(keyword='folder', create=False)
+
+    assert [os.path.join(str(tmpdir), 'will_be_created')] == \
+        config.check_folders(create=True)
