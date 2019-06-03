@@ -37,7 +37,7 @@ from pkg_resources import get_distribution, DistributionNotFound
 
 try:
     __version__ = get_distribution(__name__).version
-except DistributionNotFound:
+except DistributionNotFound:  # pragma: no cover
     pass
 
 logger = logging.getLogger(__name__)
@@ -158,4 +158,58 @@ class Config(ConfigContainer):
         if nconfig == 0:
             logger.critical('!!! No configuration file loaded !!!')
 
+        self.from_environment(name)
+
         super(Config, self).__init__(**kwargs)
+
+    def from_environment(self, name):
+        """Update config values based on environment variables prefixed with
+        an uppercase `conffile` base name (iwthout extension).
+
+        Args:
+            name (str): Full path to the config file
+
+        Returns:
+            (dict): A dictionary containing all config values found within
+                    environment variables.
+
+        """
+
+        env_var_prefix = os.path.splitext(os.path.basename(name))[0].upper()
+        if '_' in env_var_prefix:
+            token_start_idx = env_var_prefix.count('_') + 1
+        else:
+            token_start_idx = 1
+
+        env_config = {}
+        for env_var, value in os.environ.items():
+            if env_var.startswith(env_var_prefix):
+                try:
+                    value = int(value)
+                except ValueError:
+                    try:
+                        value = float(value)
+                    except ValueError:
+                        pass
+                config_tokens = env_var.split('_')[token_start_idx:]
+                self.update(dict_from_tokens(config_tokens, value))
+
+
+def dict_from_tokens(tokens, value):
+    """Build a dict-tree from a list of tokens defining a unique branch within
+    the tree.
+
+    Args:
+        tokens (list): A list of tokens defining a branch within the nested dict
+        value (any): An object set as the leaf of a branch
+
+    Returns:
+        dict: A nested dictionary
+
+    """
+
+    if len(tokens) == 0:
+        return value
+
+    key = tokens.pop(0).lower()
+    return {key: dict_from_tokens(tokens, value)}
