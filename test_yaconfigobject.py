@@ -121,3 +121,37 @@ def test_check_folders(tmpdir):
 
     assert [os.path.join(str(tmpdir), 'will_be_created')] == \
         config.check_folders(create=True)
+
+
+def test_env_variable_config(tmpdir):
+    test_app_name = 'myapp'
+    configfolder = tmpdir.mkdir('config')
+    configfile1 = configfolder.join('{}.yaml'.format(test_app_name))
+    configfile1.write(TEST_CONFIG1)
+
+    os.environ['_'.join([test_app_name.upper(),
+                         'CONFIGITEM', 'SUBITEM1'])] = '10'
+    os.environ['_'.join([test_app_name.upper(),
+                         'CONFIGITEM', 'SUBITEM2'])] = '20'
+    os.environ['_'.join([test_app_name.upper(),
+                         'CONFIGITEM', 'SUBITEM4'])] = 'four'
+
+    config = Config(paths=[str(configfolder)],
+                    name='{}.yaml'.format(test_app_name))
+
+    assert config.configitem.subitem1 == 10
+    assert config.configitem.subitem2 == 20
+    assert config.configitem.subitem3 == 3
+    assert config.configitem.subitem4 == 'four'
+
+    test_app_name2 = 'my_amazing_app'
+    configfolder2 = tmpdir.mkdir('config2')
+    configfile2 = configfolder2.join('{}.yaml'.format(test_app_name2))
+    configfile2.write(TEST_CONFIG1)
+
+    os.environ['_'.join([test_app_name2.upper(),
+                         'CONFIGITEM', 'SUBITEM1'])] = '11'
+
+    config2 = Config(paths=[str(configfolder2)],
+                    name='{}.yaml'.format(test_app_name2))
+    assert config2.configitem.subitem1 == 11

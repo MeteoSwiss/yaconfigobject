@@ -78,3 +78,19 @@ static_config = Config(database='sqlite:///:memory:')
 CONFIG = Config(name='my_app.yaml')
 CONFIG.update(static_config)
 ```
+
+### Loading config values from environment variables
+
+`yaconfigobject` will try to load config values from environment variables 
+prefixed with the uppercase module or application name when initialising a 
+`Config` object.
+
+```python
+CONFIG = Config(name='my_app.yaml')
+```
+
+All environment variables starting with `MY_APP` will be considered a config 
+value. Config items from the environment will always take precedence.
+
+> **NOTE:** When using environment variables, config item identifiers cannot
+> contain underscores(`_`)! The app / module name is the only exception.
