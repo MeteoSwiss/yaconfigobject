@@ -33,9 +33,16 @@ import logging
 
 import inspect
 
+from pkg_resources import get_distribution, DistributionNotFound
+
 logger = logging.getLogger(__name__)
 
 CONFIGNAME = 'config.yaml'
+
+try:
+    __version__ = get_distribution(__name__).version
+except DistributionNotFound:
+    pass
 
 
 class ConfigContainer(dict):
@@ -90,7 +97,8 @@ class Config(ConfigContainer):
                 os.getcwd(),
                 os.path.abspath(
                     os.path.expanduser(
-                        os.path.join('~', '.config', '{}').format(calling_package))),
+                        os.path.join('~', '.config',
+                                     '{}').format(calling_package))),
                 os.path.join('{}', 'config').format(self._package_base),
             ]
 
