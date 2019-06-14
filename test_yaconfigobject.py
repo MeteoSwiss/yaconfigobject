@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 
 import os
-import sys
-sys.path.append(os.path.abspath('.'))
 
 import logging
-logging.basicConfig(level=logging.DEBUG)
 
 import pytest
 
-from yaconfigobject import Config, ConfigError
+from yaconfigobject import Config, ConfigError, ConfigContainer
+
+logging.basicConfig(level=logging.DEBUG)
 
 TEST_CONFIG1 = """
 configitem:
@@ -129,15 +128,15 @@ def test_env_variable_config(tmpdir):
     configfile1 = configfolder.join('{}.yaml'.format(test_app_name))
     configfile1.write(TEST_CONFIG1)
 
-    os.environ['_'.join([test_app_name.upper(),
-                         'CONFIGITEM', 'SUBITEM1'])] = '10'
-    os.environ['_'.join([test_app_name.upper(),
-                         'CONFIGITEM', 'SUBITEM2'])] = '20'
-    os.environ['_'.join([test_app_name.upper(),
-                         'CONFIGITEM', 'SUBITEM4'])] = 'four'
+    os.environ['_'.join([test_app_name.upper(), 'CONFIGITEM',
+                         'SUBITEM1'])] = '10'
+    os.environ['_'.join([test_app_name.upper(), 'CONFIGITEM',
+                         'SUBITEM2'])] = '20'
+    os.environ['_'.join([test_app_name.upper(), 'CONFIGITEM',
+                         'SUBITEM4'])] = 'four'
 
-    config = Config(paths=[str(configfolder)],
-                    name='{}.yaml'.format(test_app_name))
+    config = Config(
+        paths=[str(configfolder)], name='{}.yaml'.format(test_app_name))
 
     assert config.configitem.subitem1 == 10
     assert config.configitem.subitem2 == 20
@@ -149,9 +148,37 @@ def test_env_variable_config(tmpdir):
     configfile2 = configfolder2.join('{}.yaml'.format(test_app_name2))
     configfile2.write(TEST_CONFIG1)
 
-    os.environ['_'.join([test_app_name2.upper(),
-                         'CONFIGITEM', 'SUBITEM1'])] = '11'
+    os.environ['_'.join([test_app_name2.upper(), 'CONFIGITEM',
+                         'SUBITEM1'])] = '11'
+    os.environ['_'.join([
+        test_app_name2.upper(), 'CONFIGITEM', 'CONTAINS', 'MANY', 'NESTED',
+        'SUBITEMS'
+    ])] = '12'
 
-    config2 = Config(paths=[str(configfolder2)],
-                    name='{}.yaml'.format(test_app_name2))
+    config2 = Config(
+        paths=[str(configfolder2)], name='{}.yaml'.format(test_app_name2))
     assert config2.configitem.subitem1 == 11
+
+    assert isinstance(config2.configitem.contains.many.nested, ConfigContainer)
+    assert config2.configitem.contains.many.nested.subitems == 12
+
+
+def test_env_variable_clashes(tmpdir):
+    test_app_name = 'another_app'
+    configfolder = tmpdir.mkdir('config3')
+    configfile = configfolder.join('{}.yaml'.format(test_app_name))
+    configfile.write(TEST_CONFIG1)
+
+    os.environ['_'.join([test_app_name.upper(),
+                         'ERROR_ITEM_ONE'])] = 'the_real_thing'
+    os.environ['_'.join([test_app_name.upper(),
+                         'ERROR_ITEM_ONE_SUBITEM'])] = 'not_set'
+
+    config = Config(
+        paths=[str(configfolder)], name='{}.yaml'.format(test_app_name))
+
+    # intended behaviour: the highest hierarchy value takes precedence
+    assert config.error.item.one == 'the_real_thing'
+
+    with pytest.raises(AttributeError):
+        config.error.item.one.subitem
