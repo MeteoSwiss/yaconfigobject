@@ -78,10 +78,13 @@ class ConfigContainer(dict):
         """
         for key, val in other.items():
             if isinstance(val, dict):
-                if key in self:
+                if key not in self:
+                    self[key] = ConfigContainer()
+                try:
                     self[key].update(ConfigContainer(val))
-                else:
-                    self.__setitem__(key, ConfigContainer(**val))
+                except AttributeError:
+                    pass
+
             else:
                 self.__setitem__(key, val)
 
