@@ -10,10 +10,10 @@ pudb = "*"
 pytest = "*"
 pytest-cov = "*"
 yapf = "*"
+tox = "*"
 
 [packages]
 pyyaml = "*"
-tox = "*"
 
 [requires]
-python_version = "3.5"
+python_version = "3.6"
