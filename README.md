@@ -1,8 +1,7 @@
 yaconfigobject
 ==============
 
-[![pipeline status](https://gitlab.meteoswiss.ch/APP/yaconfigobject/badges/master/pipeline.svg)](https://gitlab.meteoswiss.ch/APP/yaconfigobject/commits/master)
-[![coverage report](https://gitlab.meteoswiss.ch/APP/yaconfigobject/badges/master/coverage.svg)](https://gitlab.meteoswiss.ch/APP/yaconfigobject/commits/master)
+[![Build Status](https://travis-ci.com/MeteoSwiss/yaconfigobject.svg?branch=master)](https://travis-ci.com/MeteoSwiss/yaconfigobject) [![codecov](https://codecov.io/gh/MeteoSwiss/yaconfigobject/branch/master/graph/badge.svg)](https://codecov.io/gh/MeteoSwiss/yaconfigobject) [![Documentation Status](https://readthedocs.org/projects/yaconfigobject/badge/?version=latest)](https://yaconfigobject.readthedocs.io/en/latest/?badge=latest)
 
 
 Yet Anoter Configuration Object, this time using YAML.
