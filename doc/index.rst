@@ -1,12 +1,20 @@
 yaconfigobject Documentation
 ==============================
 
-A pure Python implementation of the OPeNDAP server protocol.
+Yet Anoter Configuration Object, this time using YAML.
 
-This module allows you to serve arbitrary data structures through the web
-framework of your choice as OPeNDAP data objects. It implements just the bare
-minimum of the DAP 2.0 protocol: DDS, DAS, and DODS responses and slicing. Array
-data needs to be supplied as `numpy.ndarray`.
+A Python package that provides application wide configuration as an object,
+where all configuration items are accessible as attributes directly::
+
+    from yaconfigobject import Config
+    CONFIG = Config()
+    property = CONFIG.topic.subtopic
+
+Configurations are stored in a YAML file inside the ``module/config`` directory
+of the application. A file called ``config.yaml`` existing in the applications
+current working directory will take precedence over the packaged file (in the
+``config`` directory).
+
 
 .. toctree::
    :maxdepth: 1
