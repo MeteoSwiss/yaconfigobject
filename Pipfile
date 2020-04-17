@@ -11,6 +11,7 @@ pytest = "*"
 pytest-cov = "*"
 yapf = "*"
 tox = "*"
+sphinx = "*"
 
 [packages]
 pyyaml = "*"
