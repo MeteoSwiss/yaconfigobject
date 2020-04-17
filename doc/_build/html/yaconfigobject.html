@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>API Documentation &#8212; yaconfigobject 1.2.3.dev0+g1089695.d20200417 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Contributing" href="contributing.html" />
+    <link rel="prev" title="Usage" href="usage.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-yaconfigobject">
+<span id="api-documentation"></span><h1>API Documentation<a class="headerlink" href="#module-yaconfigobject" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="yaconfigobject.Config">
+<em class="property">class </em><code class="sig-prename descclassname">yaconfigobject.</code><code class="sig-name descname">Config</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">paths</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/yaconfigobject.html#Config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#yaconfigobject.Config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#yaconfigobject.ConfigContainer" title="yaconfigobject.ConfigContainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">yaconfigobject.ConfigContainer</span></code></a></p>
+<dl class="py method">
+<dt id="yaconfigobject.Config.from_environment">
+<code class="sig-name descname">from_environment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/yaconfigobject.html#Config.from_environment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#yaconfigobject.Config.from_environment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update config values based on environment variables prefixed with
+an uppercase <cite>conffile</cite> base name (iwthout extension).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – Full path to the config file</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A dictionary containing all config values found within</dt><dd><p>environment variables.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(dict)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="yaconfigobject.ConfigContainer">
+<em class="property">class </em><code class="sig-prename descclassname">yaconfigobject.</code><code class="sig-name descname">ConfigContainer</code><a class="reference internal" href="_modules/yaconfigobject.html#ConfigContainer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#yaconfigobject.ConfigContainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+<p>A dictionary object holding all config items.</p>
+<dl class="py method">
+<dt id="yaconfigobject.ConfigContainer.check_folders">
+<code class="sig-name descname">check_folders</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">keyword</span><span class="o">=</span><span class="default_value">'folder'</span></em>, <em class="sig-param"><span class="n">create</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/yaconfigobject.html#ConfigContainer.check_folders"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#yaconfigobject.ConfigContainer.check_folders" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform check if folders exist. Folders are identified by a keyword
+as a substring of the corresponding field name.</p>
+<dl class="simple">
+<dt>Kwargs:</dt><dd><dl class="simple">
+<dt>keyword (str): Keyword identifying folder fields in the config</dt><dd><p>file. All fields containing this keyword as a substring are
+considered.</p>
+</dd>
+<dt>create (boolean): Whether non-existing folders will be created or</dt><dd><p>not.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>Returns:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="yaconfigobject.ConfigContainer.load">
+<code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">conffile</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/yaconfigobject.html#ConfigContainer.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#yaconfigobject.ConfigContainer.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load an arbitrary configuration file. Multiple files can be loaded,
+the last file loaded will take precedence over previously loaded files.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="yaconfigobject.ConfigContainer.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/yaconfigobject.html#ConfigContainer.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#yaconfigobject.ConfigContainer.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modify update function for consistent handling of nested
+ConfigContainers.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">yaconfigobject</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="usage.html" title="previous chapter">Usage</a></li>
+      <li>Next: <a href="contributing.html" title="next chapter">Contributing</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, MeteoSwiss.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/yaconfigobject.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
