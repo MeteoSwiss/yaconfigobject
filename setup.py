@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2018, MeteoSwiss, Philipp Meier <philipp.meier@meteoswiss.ch>
+# Copyright (C) 2020, MeteoSwiss, the authors
 
 from setuptools import setup
 
 
 setup(name='yaconfigobject',
       use_scm_version=True,
-      author='Philipp Meier',
-      author_email='philipp.meier@meteoswiss.ch',
+      author='Philipp Falke',
+      author_email='philipp.falke@meteoswiss.ch',
       description='A library representing YAML config files as object.',
       entry_points={},
       py_modules=['yaconfigobject'],
