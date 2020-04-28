@@ -1,7 +1,7 @@
 yaconfigobject
 ==============
 
-[![Build Status](https://travis-ci.com/MeteoSwiss/yaconfigobject.svg?branch=master)](https://travis-ci.com/MeteoSwiss/yaconfigobject) [![codecov](https://codecov.io/gh/MeteoSwiss/yaconfigobject/branch/master/graph/badge.svg)](https://codecov.io/gh/MeteoSwiss/yaconfigobject) [![Documentation Status](https://readthedocs.org/projects/yaconfigobject/badge/?version=latest)](https://yaconfigobject.readthedocs.io/en/latest/?badge=latest)
+[![Build Status](https://travis-ci.com/MeteoSwiss/yaconfigobject.svg?branch=master)](https://travis-ci.com/MeteoSwiss/yaconfigobject) [![codecov](https://codecov.io/gh/MeteoSwiss/yaconfigobject/branch/master/graph/badge.svg)](https://codecov.io/gh/MeteoSwiss/yaconfigobject) [![Documentation Status](https://readthedocs.org/projects/yaconfigobject/badge/?version=latest)](https://yaconfigobject.readthedocs.io/en/latest/?badge=latest) [![PyPI version](https://badge.fury.io/py/yaconfigobject.svg)](https://badge.fury.io/py/yaconfigobject)
 
 
 Yet Anoter Configuration Object, this time using YAML.
