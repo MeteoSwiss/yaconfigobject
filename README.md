@@ -1,3 +1,9 @@
+***
+
+**WARNING**: This library is no longer maintained. No new releases or bugfixes will be delivered.
+
+***
+
 yaconfigobject
 ==============
 
